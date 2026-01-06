@@ -1,10 +1,12 @@
 import { Schema, model, Document } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * User document interface
  * Extending Document ensures full Mongoose typing support
  */
 export interface IUser extends Document {
+    userUUID: string;
   name: string;
   email: string;
   password: string;
@@ -14,6 +16,12 @@ export interface IUser extends Document {
 
 const userSchema = new Schema<IUser>(
   {
+    //userUUID field for public identification instead of MongoDB's _id => SECURITY PURPOSE
+    userUUID: {
+  type: String,
+  default: () => uuidv4(),
+  unique: true,
+},
     name: {
       type: String,
       required: true,
