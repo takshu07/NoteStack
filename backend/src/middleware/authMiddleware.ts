@@ -1,18 +1,19 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Response, NextFunction } from "express";
 import { verifyToken } from "../utility/jwtUtility.js";
+import { User } from "../models/user.js";
+import type { Request } from "express";
 
 export interface AuthRequest extends Request {
   user?: {
-    email: string;
-    userUUID: string;
+    id: string; // INTERNAL MongoDB _id (important) //-------
   };
 }
 
-export const authMiddleware = (
+export const authMiddleware = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -20,16 +21,29 @@ export const authMiddleware = (
     return;
   }
 
-  const token = authHeader.split(" ")[1];
-
-  if (!token) {
-    res.status(401).json({ message: "Invalid token format" });
-    return;
-  }
-
   try {
-    const decoded = verifyToken(token);
-    req.user = decoded; // attach user info to request object
+    const token = authHeader.split(" ")[1];
+
+if (!token) {
+  res.status(401).json({ message: "Invalid token format" });
+  return;
+}
+
+const decoded = verifyToken(token); // ✅ token is now string
+
+    // decoded contains: email, userUUID
+
+    // 🔐 Resolve public UUID → internal MongoDB _id
+    const user = await User.findOne({ userUUID: decoded.userUUID }).select("_id"); //-------
+
+    if (!user) {
+      res.status(401).json({ message: "Invalid token" });
+      return;
+    }
+
+    // Attach ONLY internal ID to request
+    req.user = { id: user._id.toString() };
+
     next();
   } catch {
     res.status(401).json({ message: "Invalid token" });

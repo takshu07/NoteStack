@@ -23,6 +23,14 @@ const noteSchema = new Schema<INote>(
       type: String,
       required: true
     },
+    // owner added for authorization
+        owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true, // Important for user-based queries
+    },
+
   },
   {
     timestamps: true

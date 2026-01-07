@@ -1,31 +1,33 @@
 import type { Request, Response } from "express";
 import { Note } from "../models/notes";
+import type { AuthRequest } from "../middleware/authMiddleware.js";
+import mongoose from "mongoose";
 /**
  * Create a new note
  */
-export const createNote = async (req: Request, res: Response) => {
-  try {
-    const { title, content } = req.body;
 
-    // Important: explicit validation to avoid invalid documents
-    if (!title || !content  ) {
-      return res.status(400).json({ message: "title, content and owner are required" });
-    }
+export const createNote = async (req: AuthRequest, res: Response) => {
+  const { title, content } = req.body;
 
-    const note = await Note.create({ title, content });
-
-    return res.status(201).json(note);
-  } catch (error) {
-    return res.status(500).json({ message: "Failed to create note" });
+  if (!title || !content) {
+    return res.status(400).json({ message: "Title and content required" });
   }
+
+  const note = await Note.create({
+    title,
+    content,
+    owner: req.user!.id, // 🔐 enforced ownership ------
+  });
+
+  res.status(201).json(note);
 };
 
 /**
  * Get all notes
  */
-export const getAllNotes = async (_req: Request, res: Response) => {
+export const getAllNotes = async (req: AuthRequest, res: Response) => {
   try {
-    const notes = await Note.find().sort({ createdAt: -1 }); // createdAt: -1 means to start from latest order by createdAt descending order
+    const notes = await Note.find({ owner: req.user!.id }).sort({ createdAt: -1 }); // createdAt: -1 means to start from latest order by createdAt descending order
 
     return res.status(200).json(notes);
   } catch (error) {
@@ -36,57 +38,83 @@ export const getAllNotes = async (_req: Request, res: Response) => {
 /**
  * Get a single note by ID
  */
-export const getNoteById = async (req: Request, res: Response) => {
+export const getNoteById = async (req: AuthRequest, res: Response) => {
   try {
-    const note = await Note.findById(req.params.id);
+    const { id } = req.params;
+
+    // 🔐 Explicit runtime + type safety check
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid note ID" });
+    }
+
+    const note = await Note.findOne({
+      _id: id,
+      owner: req.user!.id, // authorized access
+    });
 
     if (!note) {
       return res.status(404).json({ message: "Note not found" });
     }
 
     return res.status(200).json(note);
-  } catch (error) {
-    return res.status(400).json({ message: "Invalid note ID" });
+  } catch {
+    return res.status(500).json({ message: "Server error" });
   }
 };
+
 
 /**
  * Update a note
  */
-export const updateNote = async (req: Request, res: Response) => {
-  try {
-    const updatedNote = await Note.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,          // Important: returns updated document
-        runValidators: true // Important: enforces schema rules on update
-      }
-    );
+export const updateNote = async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
 
-    if (!updatedNote) {
-      return res.status(404).json({ message: "Note not found" });
-    }
-
-    return res.status(200).json(updatedNote);
-  } catch (error) {
-    return res.status(400).json({ message: "Failed to update note" });
+  // 🔐 Eliminate undefined + invalid ObjectId
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid note ID" });
   }
+
+  const note = await Note.findOneAndUpdate(
+    {
+      _id: id,                 // now strictly string
+      owner: req.user!.id,     // authorized owner
+    },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!note) {
+    return res.status(404).json({ message: "Unauthorized or not found" });
+  }
+
+  return res.json(note);
 };
+
+
 
 /**
  * Delete a note
  */
-export const deleteNote = async (req: Request, res: Response) => {
-  try {
-    const deletedNote = await Note.findByIdAndDelete(req.params.id);
+export const deleteNote = async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
 
-    if (!deletedNote) {
-      return res.status(404).json({ message: "Note not found" });
-    }
-
-    return res.status(200).json({ message: "Note deleted successfully" });
-  } catch (error) {
-    return res.status(400).json({ message: "Failed to delete note" });
+  // 🔐 Narrow type + validate ObjectId
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid note ID" });
   }
+
+  const note = await Note.findOneAndDelete({
+    _id: id,             // now strictly string
+    owner: req.user!.id, // authorized owner
+  });
+
+  if (!note) {
+    return res.status(404).json({ message: "Unauthorized or not found" });
+  }
+
+  return res.json({ message: "Note deleted" });
 };
+
