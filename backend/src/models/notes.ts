@@ -7,6 +7,7 @@ export interface INote extends Document { // extend document gives us all mongoo
   title: string;
   content: string;
   owner: Types.ObjectId;
+  sharedWith: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,8 +31,16 @@ const noteSchema = new Schema<INote>(
       required: true,
       index: true, // Important for user-based queries
     },
-
+     sharedWith: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        index: true,
+      },
+    ],
   },
+
+  
   {
     timestamps: true
   }

@@ -1,6 +1,7 @@
-Note Stack is a backend application built with **TypeScript, Express, and MongoDB**.  
-It implements full **CRUD operations for notes** with a clean REST architecture.  
-User authentication is implemented using **JWT** for stateless sessions and **bcrypt** for secure password hashing.  
-Each user is assigned a **public userUUID** to safely identify users outside the database layer.  
-MongoDB ObjectIds are used internally for relations and data integrity.  
-The project emphasizes security, scalability, and production-ready patterns.
+A secure RESTful API for managing notes with full CRUD functionality.
+Implements user authentication and authorization using JWT.
+Only authenticated users can create, read, update, and delete their own notes.
+Role-based access control ensures data privacy and ownership enforcement.
+Built with Node.js, Express, MongoDB, and TypeScript.
+Includes middleware for authentication, authorization, and error handling.
+Designed for scalability and future real-time collaboration features.
