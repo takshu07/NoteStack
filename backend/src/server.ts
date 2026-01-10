@@ -1,66 +1,33 @@
-import { Server } from "socket.io";
-import http from "http"; // for socket.io server setup
-import jwt from "jsonwebtoken";
-import { User } from "./models/user";
-import type{ // for socket.io types
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from "./socket/types/socket.js";
+import http from "http";
+import dotenv from "dotenv";
+import app from "./app.js";
+import connectDB from "./config/db.js";
+import authRoutes  from "./routes/notes.js";
+import noteRoutes from "./routes/notes.js";
+dotenv.config();
 
-interface JwtPayload { // for JWT payload typing
-  userUUID: string;
-  email: string;
-}
+/* =========================
+   Database
+========================= */
+connectDB();
 
-export const initSocket = (server: http.Server) => { 
-  const io = new Server< // for socket.io generics
-    ClientToServerEvents,
-    ServerToClientEvents
-  >(server, {
-    cors: { origin: "*" },
-  });
+/* =========================
+   Routes
+========================= */
+app.use("/api/auth", authRoutes);
+app.use("/api/notes", noteRoutes);
 
-  // 🔐 Socket authentication using JWT
-  io.use(async (socket, next) => {
-    try {
-      const token = socket.handshake.auth.token;
+app.get("/", (_req, res) => {
+  res.send("NoteStack API running");
+});
 
-      if (!token) {
-        return next(new Error("Unauthorized"));
-      }
+/* =========================
+   Server
+========================= */
+const PORT = process.env.PORT || 5000;
 
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET!
-      ) as JwtPayload;
+const server = http.createServer(app);
 
-      // Resolve public UUID → internal MongoDB _id
-      const user = await User.findOne({ userUUID: decoded.userUUID }).select("_id");
-
-      if (!user) {
-        return next(new Error("Unauthorized"));
-      }
-
-      // Attach internal identity to socket
-      socket.data.userId = user._id.toString();
-      next();
-    } catch {
-      next(new Error("Unauthorized"));
-    }
-  });
-
-  io.on("connection", (socket) => {
-    console.log("Socket connected:", socket.id);
-
-    // Client joins their private room
-    socket.on("join", () => {
-      socket.join(socket.data.userId);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Socket disconnected:", socket.id);
-    });
-  });
-
-  return io;
-};
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
