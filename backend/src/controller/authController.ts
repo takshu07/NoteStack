@@ -44,18 +44,18 @@ export const Register = async (req: Request, res: Response) => {
     });
   }
 };
-
 export const Login = async (req: Request, res: Response) => {
   const parsed = LoginauthSchema.safeParse(req.body);
 
   if (!parsed.success) {
-    return res.status(400).json({ error: "Invalid input data" });
+    return res.status(400).json({ message: "Invalid input data" });
   }
 
   const { email, password } = parsed.data;
 
   try {
-const existingUser = await User.findOne({ email }).select("+password");
+    const existingUser = await User.findOne({ email }).select("+password");
+
     if (!existingUser) {
       return res.status(400).json({
         message: "User does not exist, please register",
@@ -76,16 +76,34 @@ const existingUser = await User.findOne({ email }).select("+password");
       existingUser.userUUID
     );
 
+    // 🔐 SET JWT IN HTTP-ONLY COOKIE
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict", // use "none" + secure for cross-site
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // ❌ DO NOT SEND TOKEN IN RESPONSE
     return res.status(200).json({
       message: "Login successful",
-      token,
     });
-  } catch(err) {
-  console.error("LOGIN ERROR:", err);
-  return res.status(500).json({
-    message: "Server error",
-    error: err instanceof Error ? err.message : err,
-  });
-}
-  }
 
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+    return res.status(500).json({
+      message: "Server error",
+      error: err instanceof Error ? err.message : err,
+    });
+  }
+};
+
+export const Logout = (_req: Request, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  });
+
+  return res.status(200).json({ message: "Logged out successfully" });
+};

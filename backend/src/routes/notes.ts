@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {Register,Login} from "../controller/authController.js"
+import {Register,Login ,Logout} from "../controller/authController.js"
 
 import {
   createNote,
@@ -14,7 +14,7 @@ const router = Router();
 
 router.post("/register",Register)
 router.post("/login",Login)
-
+router.post("/logout",Logout)
 router.use(authMiddleware);
 
 router.post("/createNotes", createNote);        // Create note

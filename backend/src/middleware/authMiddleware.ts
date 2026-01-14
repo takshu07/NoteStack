@@ -1,11 +1,11 @@
 import type { Response, NextFunction } from "express";
+import type { Request } from "express";
 import { verifyToken } from "../utility/jwtUtility.js";
 import { User } from "../models/user.js";
-import type { Request } from "express";
 
 export interface AuthRequest extends Request {
   user?: {
-    id: string; // INTERNAL MongoDB _id (important) //-------
+    id: string; // INTERNAL MongoDB _id
   };
 }
 
@@ -14,38 +14,34 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ message: "No token provided" });
-    return;
-  }
-
   try {
-    const token = authHeader.split(" ")[1];
+    // 🔐 READ TOKEN FROM COOKIE (NOT HEADER)
+    const token = req.cookies?.token;
 
-if (!token) {
-  res.status(401).json({ message: "Invalid token format" });
-  return;
-}
+    if (!token) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
 
-const decoded = verifyToken(token); // ✅ token is now string
-
+    // ✅ Verify JWT
+    const decoded = verifyToken(token);
     // decoded contains: email, userUUID
 
     // 🔐 Resolve public UUID → internal MongoDB _id
-    const user = await User.findOne({ userUUID: decoded.userUUID }).select("_id"); //-------
+    const user = await User.findOne({
+      userUUID: decoded.userUUID,
+    }).select("_id");
 
     if (!user) {
       res.status(401).json({ message: "Invalid token" });
       return;
     }
 
-    // Attach ONLY internal ID to request
+    // Attach ONLY internal ID
     req.user = { id: user._id.toString() };
 
     next();
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };

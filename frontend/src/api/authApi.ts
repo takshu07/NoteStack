@@ -31,3 +31,8 @@ export const registerUser = async (data: RegisterPayload) => {
     throw new Error(message);
   }
 };
+
+export const logoutUser = async () => {
+  const res = await axiosInstance.post("/auth/logout");
+  return res.data;
+};
