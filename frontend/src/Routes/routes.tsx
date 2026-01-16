@@ -1,12 +1,17 @@
 import { Routes, Route } from "react-router-dom";
-// import Register from "../pages/register";
-import Login from "../pages/login";
-const AppRoutes=()=>{
-return(
+import AuthRoutes from "./auth";
+import Dashboard from "../pages/dashboard"; // example protected page
+
+const AppRoutes = () => {
+  return (
     <Routes>
-      {/* <Route path="/" element={<Register />}/> */}
-      <Route path="/" element={<Login/>}/>
+      {/* Auth routes */}
+      <Route path="/auth/*" element={<AuthRoutes />} />
+
+      {/* App routes */}
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
-)
-}
-export default AppRoutes
+  );
+};
+
+export default AppRoutes;

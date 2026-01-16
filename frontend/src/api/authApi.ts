@@ -12,7 +12,9 @@ export interface LoginPayload {
 
 export const loginUser = async (data: LoginPayload) => {
   try {
-    const res = await axiosInstance.post("/auth/login", data);
+    const res = await axiosInstance.post("/auth/login", data,{
+      withCredentials: true,
+    }); // Include cookies in requests
     return res.data; // { message, token }
   } catch (error: any) {
     const message =
