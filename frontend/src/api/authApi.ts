@@ -12,7 +12,7 @@ export interface LoginPayload {
 
 export const loginUser = async (data: LoginPayload) => {
   try {
-    const res = await axiosInstance.post("/auth/login", data,{
+    const res = await axiosInstance.post("/api/auth/login", data,{
       withCredentials: true,
     }); // Include cookies in requests
     return res.data; // { message, token }
@@ -25,7 +25,7 @@ export const loginUser = async (data: LoginPayload) => {
 
 export const registerUser = async (data: RegisterPayload) => {
   try {
-    const response = await axiosInstance.post("/auth/register", data);
+    const response = await axiosInstance.post("/api/auth/register", data);
     return response.data;
   } catch (error: any) {
     const message =
@@ -35,6 +35,6 @@ export const registerUser = async (data: RegisterPayload) => {
 };
 
 export const logoutUser = async () => {
-  const res = await axiosInstance.post("/auth/logout");
+  const res = await axiosInstance.post("/api/auth/logout");
   return res.data;
 };
