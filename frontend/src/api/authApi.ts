@@ -1,4 +1,5 @@
 import axiosInstance from "./axios";
+import { socket } from "../socket/socket";
 export interface RegisterPayload {
   name: string;
   email: string;
@@ -15,7 +16,7 @@ export const loginUser = async (data: LoginPayload) => {
     const res = await axiosInstance.post("/api/auth/login", data,{
       withCredentials: true,
     }); // Include cookies in requests
-    return res.data; // { message, token }
+    return res.data; // { message , token is not here its on httpOnly cookie }
   } catch (error: any) {
     const message =
       error.response?.data?.message || "Login failed";
@@ -36,5 +37,6 @@ export const registerUser = async (data: RegisterPayload) => {
 
 export const logoutUser = async () => {
   const res = await axiosInstance.post("/api/auth/logout");
+    socket.disconnect();
   return res.data;
 };

@@ -1,21 +1,13 @@
-import type { Response, NextFunction } from "express";
-import type { Request } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utility/jwtUtility.js";
 import { User } from "../models/user.js";
 
-export interface AuthRequest extends Request {
-  user?: {
-    id: string; // INTERNAL MongoDB _id
-  };
-}
-
 export const authMiddleware = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    // 🔐 READ TOKEN FROM COOKIE (NOT HEADER)
     const token = req.cookies?.token;
 
     if (!token) {
@@ -23,11 +15,9 @@ export const authMiddleware = async (
       return;
     }
 
-    // ✅ Verify JWT
     const decoded = verifyToken(token);
-    // decoded contains: email, userUUID
+    // decoded: { email, userUUID }
 
-    // 🔐 Resolve public UUID → internal MongoDB _id
     const user = await User.findOne({
       userUUID: decoded.userUUID,
     }).select("_id");
@@ -37,11 +27,11 @@ export const authMiddleware = async (
       return;
     }
 
-    // Attach ONLY internal ID
+    // ✅ SAFE: string assigned to string
     req.user = { id: user._id.toString() };
 
     next();
-  } catch (err) {
+  } catch {
     res.status(401).json({ message: "Invalid or expired token" });
   }
 };
