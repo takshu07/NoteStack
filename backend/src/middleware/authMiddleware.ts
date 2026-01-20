@@ -27,11 +27,11 @@ export const authMiddleware = async (
       return;
     }
 
-    // ✅ SAFE: string assigned to string
+    // ✅ attach minimal safe user info
     req.user = { id: user._id.toString() };
 
     next();
-  } catch {
+  } catch (error) {
     res.status(401).json({ message: "Invalid or expired token" });
   }
 };

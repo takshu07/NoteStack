@@ -1,5 +1,6 @@
 import axiosInstance from "./axios";
 import { socket } from "../socket/socket";
+
 export interface RegisterPayload {
   name: string;
   email: string;
@@ -13,30 +14,49 @@ export interface LoginPayload {
 
 export const loginUser = async (data: LoginPayload) => {
   try {
-    const res = await axiosInstance.post("/api/auth/login", data,{
-      withCredentials: true,
-    }); // Include cookies in requests
-    return res.data; // { message , token is not here its on httpOnly cookie }
+    const res = await axiosInstance.post(
+      "/api/auth/login",
+      data,
+      { withCredentials: true }
+    );
+    return res.data;
   } catch (error: any) {
-    const message =
-      error.response?.data?.message || "Login failed";
-    throw new Error(message);
+    throw new Error(
+      error.response?.data?.message || "Login failed"
+    );
   }
 };
 
 export const registerUser = async (data: RegisterPayload) => {
   try {
-    const response = await axiosInstance.post("/api/auth/register", data);
-    return response.data;
+    const res = await axiosInstance.post(
+      "/api/auth/register",
+      data,
+      { withCredentials: true }
+    );
+    return res.data;
   } catch (error: any) {
-    const message =
-      error.response?.data?.message || "Registration failed";
-    throw new Error(message);
+    throw new Error(
+      error.response?.data?.message || "Registration failed"
+    );
   }
 };
 
 export const logoutUser = async () => {
-  const res = await axiosInstance.post("/api/auth/logout");
-    socket.disconnect();
+  const res = await axiosInstance.post(
+    "/api/auth/logout",
+    {},
+    { withCredentials: true }
+  );
+  socket.disconnect();
+  return res.data;
+};
+
+// ✅ USED BY checkAuthThunk
+export const checkAuth = async () => {
+  const res = await axiosInstance.get(
+    "/api/auth/me",
+    { withCredentials: true }
+  );
   return res.data;
 };

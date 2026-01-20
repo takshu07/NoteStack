@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { loginUser } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { loginThunk } from "../features/auth/authThunks";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ auth state only
+
+  const { loading, error } = useAppSelector((state) => state.auth);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -23,17 +23,11 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
 
-    try {
-      await loginUser(formData); // ✅ cookie is set by backend
-      login();                   // ✅ update auth state
+    const result = await dispatch(loginThunk(formData));
+
+    if (loginThunk.fulfilled.match(result)) {
       navigate("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed");
-    } finally {
-      setLoading(false);
     }
   };
 
