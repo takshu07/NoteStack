@@ -17,28 +17,42 @@ export const initSocket = (server: any) => {
       socket.emit("init-content", note?.content || "");
     });
 
-   socket.on("join-collab", async ({ collabId }) => {
+socket.on("join-collab", async ({ collabId }) => {
   socket.join(collabId);
 
   const collab = await CollabNote.findById(collabId);
+
   socket.emit("init-collab", {
     title: collab?.title || "",
     content: collab?.content || "",
   });
 });
 
-socket.on("collab-update", async ({ collabId, title, content }) => {
+// 🔁 real-time sync ONLY
+socket.on("collab-update", ({ collabId, title, content }) => {
+  socket.to(collabId).emit("collab-updated", {
+    title,
+    content,
+  });
+});
+
+
+socket.on("collab-save", async ({ collabId, title, content }) => {
+  console.log("SAVE RECEIVED", collabId);
+
   await CollabNote.findByIdAndUpdate(collabId, {
     title,
     content,
     updatedAt: new Date(),
   });
 
-  socket.to(collabId).emit("collab-updated", {
-    title,
-    content,
-  });
+  // 🔥 GUARANTEED DELIVERY
+  io.to(collabId).emit("collab-saved"); // other users
+  socket.emit("collab-saved");          // sender (YOU)
 });
+
+
+
 
   });
 };

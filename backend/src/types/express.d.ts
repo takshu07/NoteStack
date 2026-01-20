@@ -1,8 +1,11 @@
 import { Types } from "mongoose";
+
 declare global {
   namespace Express {
     interface User {
-      id: string; // ALWAYS string at request layer
+      id: string;
+      _id?: Types.ObjectId;
+      email?: string;
     }
 
     interface Request {
@@ -12,6 +15,3 @@ declare global {
 }
 
 export {};
-
-
-
