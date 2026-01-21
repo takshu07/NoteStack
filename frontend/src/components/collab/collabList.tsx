@@ -44,7 +44,7 @@ const CollabList = () => {
           <li
             key={collab._id}
             onClick={() =>
-              navigate(`/dashboard/collab/${collab._id}`)
+              navigate(`/notes/collab/${collab._id}`)
             }
             className="cursor-pointer p-2 rounded hover:bg-slate-100"
           >

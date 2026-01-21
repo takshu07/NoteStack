@@ -17,9 +17,12 @@ const NewCollab = () => {
   }, []);
 
   const handleUserClick = async (userId: string) => {
-    const res = await startCollab(userId);
-    navigate(`/dashboard/collab/${res.data._id}`);
-  };
+  const res = await startCollab(userId);
+
+  // ✅ MUST match AppRoutes
+  navigate(`/notes/collab/${res.data._id}`);
+};
+
 
   return (
     <div className="p-6 bg-white rounded shadow max-w-md">

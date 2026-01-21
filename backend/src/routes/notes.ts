@@ -20,7 +20,7 @@ router.use(authMiddleware);
 router.post("/createNotes", createNote);        // Create note
 router.get("/getAllNotes", getAllNotes);         // Read all notes
 router.get("/getNotesById/:id", getNoteById);      // Read single note
-router.put("/updateNoteById/:id", updateNote);       // Update note
+router.put("/:id", updateNote);
 router.delete("/deleteNoteById/:id", deleteNote);    // Delete note
 
 export default router;

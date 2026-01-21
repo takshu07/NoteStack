@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 const Sidebar: React.FC = () => {
   const [privateOpen, setPrivateOpen] = useState(false);
@@ -7,66 +8,101 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-64 bg-slate-800 text-white h-[calc(100vh-4rem)] p-4 relative z-20">
-      
-      {/* PRIVATE NOTES */}
+    <aside
+      className="
+        fixed top-16 left-0 z-40
+        w-64 h-[calc(100vh-4rem)]
+        bg-white border-r border-gray-200
+        p-4 overflow-y-auto
+      "
+    >
+      {/* ================= PRIVATE NOTES ================= */}
       <div className="mb-6">
         <button
           onClick={() => setPrivateOpen((p) => !p)}
-          className="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700"
+          className="
+            w-full flex justify-between items-center
+            px-3 py-2 rounded-md
+            text-sm font-medium text-gray-900
+            hover:bg-gray-100 transition
+          "
         >
           <span>Private Notes</span>
-          <span>{privateOpen ? "▼" : "▶"}</span>
+          {privateOpen ? (
+            <ChevronDown size={16} className="text-gray-500" />
+          ) : (
+            <ChevronRight size={16} className="text-gray-500" />
+          )}
         </button>
 
         {privateOpen && (
-          <div className="ml-6 mt-2 flex flex-col gap-2 text-sm">
+          <div className="ml-4 mt-2 flex flex-col gap-1 text-sm">
             <button
-              className="text-left hover:text-white"
-              onClick={() => navigate("/dashboard/create")}
+              className="
+                px-3 py-1.5 rounded-md text-left
+                text-gray-700 hover:bg-gray-100 transition
+              "
+              onClick={() => navigate("/notes/create")}
             >
-              New +
+              New
             </button>
 
             <button
-              className="text-left hover:text-white"
-              onClick={() => navigate("/dashboard/notes")}
+              className="
+                px-3 py-1.5 rounded-md text-left
+                text-gray-700 hover:bg-gray-100 transition
+              "
+              onClick={() => navigate("/notes")}
             >
-              Get All Notes
+              All Notes
             </button>
           </div>
         )}
       </div>
 
-      {/* COLLAB */}
+      {/* ================= COLLAB NOTES ================= */}
       <div>
         <button
           onClick={() => setCollabOpen((c) => !c)}
-          className="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700"
+          className="
+            w-full flex justify-between items-center
+            px-3 py-2 rounded-md
+            text-sm font-medium text-gray-900
+            hover:bg-gray-100 transition
+          "
         >
-          <span>COLLAB</span>
-          <span>{collabOpen ? "▼" : "▶"}</span>
+          <span>Collaboration</span>
+          {collabOpen ? (
+            <ChevronDown size={16} className="text-gray-500" />
+          ) : (
+            <ChevronRight size={16} className="text-gray-500" />
+          )}
         </button>
 
         {collabOpen && (
-          <div className="ml-6 mt-2 flex flex-col gap-2 text-sm">
+          <div className="ml-4 mt-2 flex flex-col gap-1 text-sm">
             <button
-              className="text-left hover:text-white"
-              onClick={() => navigate("/dashboard/collab/new")}
+              className="
+                px-3 py-1.5 rounded-md text-left
+                text-gray-700 hover:bg-gray-100 transition
+              "
+              onClick={() => navigate("/notes/collab/new")}
             >
-              NewCollab +
+              New Collab
             </button>
 
             <button
-              className="text-left hover:text-white"
-              onClick={() => navigate("/dashboard/collab")}
+              className="
+                px-3 py-1.5 rounded-md text-left
+                text-gray-700 hover:bg-gray-100 transition
+              "
+              onClick={() => navigate("/notes/collab")}
             >
-              Get All Collabs
+              All Collabs
             </button>
           </div>
         )}
       </div>
-
     </aside>
   );
 };

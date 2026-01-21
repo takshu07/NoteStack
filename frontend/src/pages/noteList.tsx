@@ -14,7 +14,9 @@ const NotesList: React.FC = () => {
     const fetchNotes = async () => {
       try {
         setLoading(true);
-        const res = await api.get<Note[]>("/api/notes/getAllNotes");
+        const res = await api.get<Note[]>("/api/notes/getAllNotes", {
+          withCredentials: true,
+        });
         setNotes(res.data);
       } catch (err: any) {
         setError(
@@ -32,7 +34,7 @@ const NotesList: React.FC = () => {
     e: React.MouseEvent,
     id: string
   ) => {
-    e.stopPropagation(); // 🔑 prevent navigation
+    e.stopPropagation();
 
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this note?"
@@ -41,9 +43,10 @@ const NotesList: React.FC = () => {
     if (!confirmDelete) return;
 
     try {
-      await api.delete(`api/notes/deleteNoteById/${id}`);
+      await api.delete(`/api/notes/deleteNoteById/${id}`, {
+        withCredentials: true,
+      });
 
-      // ✅ Remove from UI immediately
       setNotes((prev) => prev.filter((n) => n._id !== id));
     } catch (err: any) {
       alert(
@@ -70,15 +73,12 @@ const NotesList: React.FC = () => {
           <li
             key={note._id}
             className="flex justify-between items-center cursor-pointer"
-            onClick={() =>
-              navigate(`/dashboard/notes/${note._id}`)
-            }
+            onClick={() => navigate(`/notes/${note._id}`)} // ✅ FIX
           >
             <span className="text-blue-600 hover:underline">
               {note.title}
             </span>
 
-            {/* DELETE BUTTON */}
             <button
               onClick={(e) => handleDelete(e, note._id)}
               className="ml-3 text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"

@@ -1,4 +1,5 @@
 import { Server, Socket } from "socket.io";
+import mongoose from "mongoose";
 import CollabNote from "./models/collabNote.js";
 
 export const initSocket = (server: any) => {
@@ -10,49 +11,62 @@ export const initSocket = (server: any) => {
   });
 
   io.on("connection", (socket: Socket) => {
-    socket.on("join-collab", async ({ collabId }) => {
+    console.log("🔌 Socket connected:", socket.id);
+
+    // ================= JOIN COLLAB =================
+    socket.on("join-collab", async ({ collabId }: { collabId: string }) => {
+      if (!mongoose.Types.ObjectId.isValid(collabId)) {
+        console.error("❌ Invalid collabId:", collabId);
+        return;
+      }
+
+      const collab = await CollabNote.findById(collabId);
+      if (!collab) {
+        console.error("❌ Collab not found:", collabId);
+        return;
+      }
+
       socket.join(collabId);
 
-      const note = await CollabNote.findById(collabId);
-      socket.emit("init-content", note?.content || "");
+      socket.emit("init-collab", {
+        title: collab.title,
+        content: collab.content,
+      });
+
+      console.log(`✅ Joined collab ${collabId}`);
     });
 
-socket.on("join-collab", async ({ collabId }) => {
-  socket.join(collabId);
+    // ================= REAL-TIME UPDATE =================
+    socket.on(
+      "collab-update",
+      ({ collabId, title, content }: { collabId: string; title: string; content: string }) => {
+        if (!mongoose.Types.ObjectId.isValid(collabId)) return;
 
-  const collab = await CollabNote.findById(collabId);
+        socket.to(collabId).emit("collab-updated", {
+          title,
+          content,
+        });
+      }
+    );
 
-  socket.emit("init-collab", {
-    title: collab?.title || "",
-    content: collab?.content || "",
-  });
-});
+    // ================= SAVE =================
+    socket.on(
+      "collab-save",
+      async ({ collabId, title, content }: { collabId: string; title: string; content: string }) => {
+        if (!mongoose.Types.ObjectId.isValid(collabId)) return;
 
-// 🔁 real-time sync ONLY
-socket.on("collab-update", ({ collabId, title, content }) => {
-  socket.to(collabId).emit("collab-updated", {
-    title,
-    content,
-  });
-});
+        await CollabNote.findByIdAndUpdate(collabId, {
+          title,
+          content,
+          updatedAt: new Date(),
+        });
 
+        io.to(collabId).emit("collab-saved");
+      }
+    );
 
-socket.on("collab-save", async ({ collabId, title, content }) => {
-  console.log("SAVE RECEIVED", collabId);
-
-  await CollabNote.findByIdAndUpdate(collabId, {
-    title,
-    content,
-    updatedAt: new Date(),
-  });
-
-  // 🔥 GUARANTEED DELIVERY
-  io.to(collabId).emit("collab-saved"); // other users
-  socket.emit("collab-saved");          // sender (YOU)
-});
-
-
-
-
+    socket.on("disconnect", () => {
+      console.log("🔌 Socket disconnected:", socket.id);
+    });
   });
 };

@@ -1,9 +1,19 @@
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    /* 🔑 REQUIRED FOR SHADCN / ALIAS */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    /* Target & Libs */
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* Module */
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
