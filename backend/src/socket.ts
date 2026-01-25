@@ -65,6 +65,14 @@ export const initSocket = (server: any) => {
       }
     );
 
+    // ================= TYPING =================
+    socket.on(
+      "collab-typing",
+      ({ collabId, userId }: { collabId: string; userId: string }) => {
+        socket.to(collabId).emit("collab-typing", { userId });
+      }
+    );
+
     socket.on("disconnect", () => {
       console.log("🔌 Socket disconnected:", socket.id);
     });

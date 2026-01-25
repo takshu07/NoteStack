@@ -1,27 +1,15 @@
-import Antigravity from "./antiGravity";
-const LandingBackground = () => {
-  return (
-    <div style={{ width: '100%', height: '400px', position: 'relative' }}>
-  <Antigravity
-    count={300}
-    magnetRadius={6}
-    ringRadius={7}
-    waveSpeed={0.4}
-    waveAmplitude={1}
-    particleSize={1.5}
-    lerpSpeed={0.05}
-    color="#5227FF"
-    autoAnimate
-    particleVariance={1}
-    rotationSpeed={0}
-    depthFactor={1}
-    pulseSpeed={3}
-    particleShape="capsule"
-    fieldStrength={10}
-/>
+import GhostCursor from "./ghostCursor";
+{/* BACKGROUND LAYER */}
+{/* BACKGROUND */}
+<div className="absolute inset-0 h-screen w-full z-0 pointer-events-none">
+  <GhostCursor
+    trailLength={140}
+    color="#ffffff"
+    brightness={2.2}
+    bloomStrength={0.45}
+    bloomRadius={1.1}
+    bloomThreshold={0.015}
+    edgeIntensity={0.3}
+  />
 </div>
 
-  );
-};
-
-export default LandingBackground;

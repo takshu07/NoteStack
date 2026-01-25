@@ -1,33 +1,26 @@
 import Navbar from "../layout/navbar";
 import Sidebar from "../layout/sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Notes = () => {
+  const location = useLocation();
+  const isNewCollab = location.pathname === "/notes/collab/new";
+
   return (
-    <div className="min-h-screen bg-[#0b0d10]">
-      {/* NAVBAR */}
+    <div className="h-screen bg-white dark:bg-gray-950 overflow-hidden transition-colors duration-300">
       <Navbar />
 
-      <div className="flex">
-        {/* SIDEBAR */}
+      <div className="flex pt-16 h-screen">
         <Sidebar />
 
-        {/* MAIN CONTENT */}
-        <main className="flex-1 ml-64 pt-16 px-8 pb-10">
-          {/* LIGHT CONTENT SURFACE */}
-          <div
-            className="
-              mx-auto
-              max-w-5xl
-              bg-white
-              text-gray-900
-              rounded-2xl
-              shadow-xl
-              p-8
-            "
-          >
-            <Outlet />
-          </div>
+        <main
+          className={`flex-1 ${
+            isNewCollab
+              ? "p-0 overflow-hidden"
+              : "px-8 py-8 overflow-auto"
+          }`}
+        >
+          <Outlet />
         </main>
       </div>
     </div>

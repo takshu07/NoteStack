@@ -1,5 +1,104 @@
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @import "tailwindcss";
-input, textarea {
-  color: black;
-  caret-color: black;
+@plugin "@tailwindcss/typography";
+
+/* Force dark mode based on .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-dark: rgba(17, 24, 39, 0.7);
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full hover:bg-gray-400 dark:hover:bg-gray-600;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply backdrop-blur-md bg-white/80 dark:bg-gray-950/80 border border-gray-200/50 dark:border-gray-800/50;
+}
+
+/* Inputs & Textareas */
+input,
+textarea {
+  color: inherit;
+  caret-color: #2a9d8f;
+  /* Teal accent */
+}
+
+/* Editor Placeholder */
+.is-editor-empty:first-child::before {
+  @apply text-gray-400 dark:text-gray-500 italic;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Clean Editor */
+.ProseMirror {
+  outline: none;
+  min-height: 60vh;
+  padding-bottom: 4rem;
+}
+
+/* Typography Improvements for Editor */
+.ProseMirror h1 {
+  @apply text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-50 mt-8 mb-4;
+}
+
+.ProseMirror h2 {
+  @apply text-2xl font-bold tracking-tight text-gray-800 dark:text-gray-200 mt-6 mb-3;
+}
+
+.ProseMirror h3 {
+  @apply text-xl font-semibold text-gray-800 dark:text-gray-200 mt-4 mb-2;
+}
+
+.ProseMirror p {
+  @apply text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4;
+}
+
+.ProseMirror ul {
+  @apply list-disc list-outside ml-5 mb-4 space-y-1 marker:text-gray-400;
+}
+
+.ProseMirror ol {
+  @apply list-decimal list-outside ml-5 mb-4 space-y-1 marker:text-gray-400;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-teal-500 pl-4 py-1 italic bg-gray-50 dark:bg-gray-900/50 rounded-r-lg text-gray-600 dark:text-gray-400 my-4;
+}
+
+.ProseMirror pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-xl font-mono text-sm overflow-x-auto my-4 border border-gray-800;
+}
+
+.ProseMirror code {
+  @apply bg-gray-100 dark:bg-gray-800 text-teal-600 dark:text-teal-400 px-1.5 py-0.5 rounded font-mono text-sm font-medium;
+}
+
+.ProseMirror pre code {
+  @apply bg-transparent text-inherit p-0;
 }

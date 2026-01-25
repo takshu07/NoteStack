@@ -1,4 +1,4 @@
-import AppRoutes from "./Routes/routes";
+import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
 import { checkAuthThunk } from "./features/auth/authThunks";
@@ -15,7 +15,7 @@ function App() {
     return <p>Checking authentication...</p>;
   }
 
-  return <AppRoutes />;
+  return <Outlet />;
 }
 
 export default App;

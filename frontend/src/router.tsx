@@ -1,20 +1,21 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import AuthRoutes from "./auth";
+import { createBrowserRouter, createRoutesFromElements, Route, Navigate } from "react-router-dom";
+import App from "./App";
+import AuthRoutes from "./Routes/auth";
 
-import About from "../pages/about";
-import Dashboard from "../pages/dashboard";
+import About from "./pages/about";
+import Dashboard from "./pages/dashboard";
 
 import Notes from "@/pages/notes";
-import NotesHome from "../pages/notesHome";
-import CreateNote from "../pages/createNote";
-import UpdateNote from "../pages/updateNotes";
-import CollabList from "../components/collab/collabList";
-import CollabPage from "../pages/collab/CollabPage";
-import NewCollab from "../pages/collab/NewCollab";
+import NotesHome from "./pages/notesHome";
+import CreateNote from "./pages/createNote";
+import UpdateNote from "./pages/updateNotes";
+import CollabList from "./components/collab/collabList";
+import CollabPage from "./pages/collab/CollabPage";
+import NewCollab from "./pages/collab/NewCollab";
 
-const AppRoutes = () => {
-  return (
-    <Routes>
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route element={<App />}>
       {/* ================= AUTH ================= */}
       <Route path="/api/auth/*" element={<AuthRoutes />} />
 
@@ -49,8 +50,6 @@ const AppRoutes = () => {
 
       {/* ================= FALLBACK ================= */}
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  );
-};
-
-export default AppRoutes;
+    </Route>
+  )
+);

@@ -1,173 +1,95 @@
-const About: React.FC = () => {
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, CheckCircle2, Shield, Zap, Users } from "lucide-react";
+
+const About = () => {
+  const navigate = useNavigate();
+
   return (
-    <div
-      className="
-        relative min-h-screen
-        bg-[#0b0d10]
-        text-[#f5f7fa]
-        overflow-hidden
-        font-sans
-      "
-    >
-      {/* CONTENT */}
-      <main
-        className="
-          relative z-10
-          max-w-5xl
-          mx-auto
-          px-6
-          pt-24
-          pb-20
-        "
-      >
-        
-        
-        {/* Title */}
-        <h1
-          className="
-            text-[36px] md:text-[44px]
-            font-semibold
-            tracking-tight
-            text-[#f5f7fa]
-          "
-        >
-          About NoteStack
-        </h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+      
+      {/* ===== NAVBAR ===== */}
+      <nav className="fixed top-0 left-0 right-0 z-50 h-16 px-6 glass-panel border-b-0 flex items-center justify-between backdrop-blur-md bg-white/70 dark:bg-gray-950/70 border-b border-gray-200/50 dark:border-gray-800/50">
+         <div className="max-w-5xl mx-auto w-full flex items-center justify-between">
+            <button 
+                onClick={() => navigate("/")}
+                className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            >
+                <ArrowLeft size={16} />
+                Back to Home
+            </button>
+            <span className="font-bold tracking-tight">NoteStack</span>
+         </div>
+      </nav>
 
-        {/* Intro */}
-        <p
-          className="
-            mt-6
-            max-w-3xl
-            text-[17px]
-            leading-relaxed
-            text-[#9aa0aa]
-          "
-        >
-          NoteStack is a modern note-taking and collaboration platform designed
-          for people who value clarity, focus, and real-time teamwork.
-          It removes distractions and brings structure to the way ideas are
-          captured, shared, and refined.
-        </p>
+      {/* ===== HEADER ===== */}
+      <main className="pt-32 pb-20 px-6">
+        <div className="max-w-3xl mx-auto text-center mb-20">
+             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 text-xs font-bold uppercase tracking-wider mb-6">
+                About The Project
+             </div>
+             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
+                Designed for Focus.<br/>
+                Built for <span className="text-teal-600 dark:text-teal-400">Teams.</span>
+             </h1>
+             <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
+                 NoteStack is an open-source collaboration platform that blends the simplicity of a notepad with the power of real-time teamwork. No distractions, just flow.
+             </p>
+        </div>
 
-        {/* Section: What is NoteStack */}
-        <section className="mt-14">
-          <h2
-            className="
-              text-[22px]
-              font-semibold
-              text-[#e6e8ec]
-            "
-          >
-            What is NoteStack?
-          </h2>
+        {/* ===== FEATURE GRID ===== */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+             <FeatureCard 
+                icon={<Zap className="text-amber-500" />}
+                title="Lightning Fast"
+                desc="Built with React & Vite for instant interactions. No loading spinners, no lag."
+             />
+             <FeatureCard 
+                icon={<Users className="text-teal-500" />}
+                title="Real-Time Collaboration"
+                desc="See who's typing, edit together, and never face synchronization conflicts."
+             />
+             <FeatureCard 
+                icon={<Shield className="text-indigo-500" />}
+                title="Secure & Private"
+                desc="Your notes are yours. We use JWT authentication and secure MongoDB storage."
+             />
+             <FeatureCard 
+                icon={<CheckCircle2 className="text-emerald-500" />}
+                title="Focus Mode"
+                desc="A minimal interface that disappears when you write, helping you stay in the zone."
+             />
+        </div>
 
-          <p
-            className="
-              mt-4
-              max-w-3xl
-              text-[16px]
-              leading-relaxed
-              text-[#9aa0aa]
-            "
-          >
-            NoteStack is a clean, distraction-free workspace where you can write
-            private notes, organize information, and collaborate with others in
-            real time. It is built for students, developers, and teams who want
-            speed, simplicity, and reliability without unnecessary complexity.
-          </p>
-        </section>
+        {/* ===== TEAM / CREDITS ===== */}
+        <div className="max-w-3xl mx-auto border-t border-gray-200 dark:border-gray-800 pt-12 text-center">
+            <h2 className="text-xl font-bold mb-4">Why NoteStack?</h2>
+            <p className="text-gray-500 dark:text-gray-400">
+                Created to solve the problem of bloated note-taking apps. 
+                We wanted something that starts instantly and just works.
+            </p>
+        </div>
 
-        {/* Section: Why it is useful */}
-        <section className="mt-14">
-          <h2
-            className="
-              text-[22px]
-              font-semibold
-              text-[#e6e8ec]
-            "
-          >
-            Why is it useful?
-          </h2>
-
-          <ul
-            className="
-              mt-6
-              space-y-4
-              max-w-3xl
-              text-[16px]
-              text-[#9aa0aa]
-            "
-          >
-            <li>• Write and manage notes in a focused, clutter-free interface</li>
-            <li>• Collaborate with others in real time without friction</li>
-            <li>• Keep personal and shared notes clearly separated</li>
-            <li>• Access your work from anywhere, securely</li>
-            <li>• Stay productive without being overwhelmed by features</li>
-          </ul>
-        </section>
-
-        {/* Section: Why choose NoteStack */}
-        <section className="mt-14">
-          <h2
-            className="
-              text-[22px]
-              font-semibold
-              text-[#e6e8ec]
-            "
-          >
-            Why choose NoteStack over other platforms?
-          </h2>
-
-          <p
-            className="
-              mt-4
-              max-w-3xl
-              text-[16px]
-              leading-relaxed
-              text-[#9aa0aa]
-            "
-          >
-            Many note-taking tools try to do everything, which often results in
-            cluttered interfaces and unnecessary complexity. NoteStack focuses
-            on what truly matters — writing, organizing, and collaborating —
-            while staying fast, minimal, and intuitive.
-          </p>
-
-          <p
-            className="
-              mt-4
-              max-w-3xl
-              text-[16px]
-              leading-relaxed
-              text-[#9aa0aa]
-            "
-          >
-            Our platform is designed with a calm visual language, modern
-            technology, and real-world workflows in mind. This makes NoteStack
-            easier to adopt, easier to use long-term, and better suited for
-            focused work compared to bloated alternatives.
-          </p>
-        </section>
-
-        {/* Closing */}
-        <section className="mt-16">
-          <p
-            className="
-              max-w-3xl
-              text-[16px]
-              leading-relaxed
-              text-[#9aa0aa]
-            "
-          >
-            NoteStack is not just another notes app — it is a thoughtfully
-            designed workspace for people who want to think clearly, collaborate
-            efficiently, and stay in control of their ideas.
-          </p>
-        </section>
       </main>
+
+      {/* FOOTER */}
+      <footer className="py-8 text-center text-sm text-gray-400 border-t border-gray-100 dark:border-gray-800/50">
+          © {new Date().getFullYear()} NoteStack. All rights reserved.
+      </footer>
     </div>
   );
 };
+
+// Helper
+const FeatureCard = ({ icon, title, desc }: any) => (
+    <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800 hover:border-teal-500/20 dark:hover:border-teal-500/20 shadow-sm hover:shadow-md transition-all">
+        <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center mb-4">
+            {icon}
+        </div>
+        <h3 className="text-lg font-bold mb-2">{title}</h3>
+        <p className="text-gray-500 dark:text-gray-400 leading-relaxed">
+            {desc}
+        </p>
+    </div>
+);
 
 export default About;

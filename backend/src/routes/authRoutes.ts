@@ -11,7 +11,7 @@ router.post("/logout", Logout);
 // ✅ used by checkAuthThunk
 router.get("/me", authMiddleware, (req, res) => {
   res.status(200).json({
-    user: { id: req.user!.id },
+    user: req.user,
   });
 });
 
