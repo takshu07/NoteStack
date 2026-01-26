@@ -14,6 +14,8 @@ declare global {
   }
 }
 
+export interface AuthRequest extends Request {}
+
 export const authMiddleware = async (
   req: Request,
   res: Response,
