@@ -9,7 +9,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin:[ "http://localhost:5173", "https://note-stack-theta.vercel.app/"], // frontend URL
+    origin:[ "https://note-stack-theta.vercel.app"], // frontend URL
     credentials: true,               // 🔑 REQUIRED
   })
 );

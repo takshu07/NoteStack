@@ -5,7 +5,7 @@ import CollabNote from "./models/collabNote.js";
 export const initSocket = (server: any) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: "https://note-stack-theta.vercel.app",
       credentials: true,
     },
   });
