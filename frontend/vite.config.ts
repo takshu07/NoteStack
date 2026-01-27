@@ -11,4 +11,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.vercel.app/'),
+    'import.meta.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.vercel.app/')
+  },
 });
