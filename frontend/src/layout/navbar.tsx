@@ -4,9 +4,12 @@ import { useTheme } from "../context/ThemeContext";
 import api from "../api/axios";
 
 import { useNavbar } from "../context/NavbarContext";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { logout } from "../features/auth/authSlics";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { centerContent } = useNavbar();
 
   const handleLogout = async () => {
@@ -21,7 +24,8 @@ const Navbar = () => {
     } finally {
       localStorage.removeItem("userId");
       localStorage.removeItem("user");
-      navigate("/api/auth/login", { replace: true });
+      dispatch(logout());
+      navigate("/", { replace: true });
     }
   };
 

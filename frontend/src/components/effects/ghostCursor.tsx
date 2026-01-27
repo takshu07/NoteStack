@@ -240,7 +240,8 @@ vec4 bt = blob(uv, pm, t * 0.5, iOpacity);
    const host = containerRef.current;
 if (!host) return;
 
-const target = host; // 👈 now guaranteed non-null
+
+
 
 
   

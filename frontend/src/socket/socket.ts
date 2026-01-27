@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 
 export const socket: Socket = io(
-  "http://localhost:8000",
+  "https://note-stack-backend.vercel.app/",
   { withCredentials: true }
 );

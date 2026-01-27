@@ -3,8 +3,7 @@ import {
   Bold,
   Italic,
   Strikethrough,
-  Heading1,
-  Heading2,
+
   List,
   ListOrdered,
   Quote,

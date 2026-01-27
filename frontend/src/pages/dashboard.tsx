@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import GhostCursor from "../components/effects/ghostCursor";
 import { Notebook, Users, CheckCircle2, Shield, Zap, Moon, Sun } from "lucide-react";
-import { useAppSelector } from "../hooks/reduxHooks";
 import { useTheme } from "../context/ThemeContext";
 
 // Mock stats - in real app, fetch these
@@ -14,8 +13,7 @@ const STATS = [
 const Dashboard = () => {
   const navigate = useNavigate();
   const [greeting, setGreeting] = useState("");
-  const { isAuthChecked, error } = useAppSelector((state) => state.auth);
-  const isAuthenticated = isAuthChecked && !error;
+
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {

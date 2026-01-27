@@ -20,7 +20,7 @@ const UpdateNote: React.FC = () => {
 
   const location = useLocation(); // Import useLocation
   const [title, setTitle] = useState("");
-  const [initialContent, setInitialContent] = useState(""); // Track initial for comparison
+
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(!location.state?.note); // Skip loading if state exists
@@ -57,7 +57,7 @@ const UpdateNote: React.FC = () => {
     if (location.state?.note && editor && !title) {
        const note = location.state.note;
        setTitle(note.title);
-       setInitialContent(note.content || "");
+
        editor.commands.setContent(note.content || "", { emitUpdate: false });
        
        const dateStr = new Date(note.updatedAt || note.createdAt || Date.now()).toLocaleString();
@@ -84,7 +84,7 @@ const UpdateNote: React.FC = () => {
       // Only update if differnt/newer (or if we didn't have state)
       if (!location.state?.note) {
           setTitle(res.data.title);
-          setInitialContent(res.data.content || "");
+
           editor.commands.setContent(res.data.content || "", {
             emitUpdate: false,
           });
