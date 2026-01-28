@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     port : 5173,
     host: 'note-stack-frontend-psi.vercel.app',
-    allowedHosts: ['note-stack-frontend-psi.vercel.app', 'note-stack-backend.vercel.app', 'localhost']
+    allowedHosts: ['note-stack-frontend-psi.vercel.app', 'note-stack-backend.onrender.com', 'localhost']
   },
   resolve: {
     alias: {
@@ -17,7 +17,7 @@ export default defineConfig({
     },
   },
   define: {
-    'process.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.vercel.app/'),
-    'import.meta.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.vercel.app/')
+    'process.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.onrender.com/'),
+    'import.meta.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.onrender.com/')
   },
 });
