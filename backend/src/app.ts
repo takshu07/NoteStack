@@ -14,10 +14,4 @@ app.use(
   })
 );
 
-// Handle OPTIONS requests for CORS preflight
-app.options('/*', cors({
-  origin: "https://note-stack-frontend-psi.vercel.app",
-  credentials: true
-}));
-
 export default app;
