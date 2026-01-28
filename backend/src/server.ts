@@ -29,6 +29,12 @@ const server = http.createServer(app);
 
 initSocket(server);
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Only start the server if not in Vercel environment
+if (process.env.VERCEL !== "1") {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export for Vercel
+export default server;
