@@ -6,6 +6,11 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    port : 5173,
+    host: 'note-stack-frontend-psi.vercel.app',
+    allowedHosts: ['note-stack-frontend-psi.vercel.app', 'note-stack-backend.vercel.app', 'localhost']
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
