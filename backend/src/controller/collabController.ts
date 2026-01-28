@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import CollabNote from "../models/collabNote";
+import CollabNote from "../models/collabNote.js";
 
 export const startCollab = async (
   req: Request,

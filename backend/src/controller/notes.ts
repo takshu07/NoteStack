@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Note } from "../models/notes";
+import { Note } from "../models/notes.js";
 import type { AuthRequest } from "../middleware/authMiddleware.js";
 import mongoose from "mongoose";
 /**
