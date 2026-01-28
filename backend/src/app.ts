@@ -9,7 +9,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["https://note-stack-frontend-psi.vercel.app"], // frontend URL
+    origin: ["https://note-stack-frontend-psi.vercel.app", "http://localhost:5173", "http://localhost:5174" ], // frontend URL
     credentials: true,               // 🔑 REQUIRED
   })
 );

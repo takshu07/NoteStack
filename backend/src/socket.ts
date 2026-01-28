@@ -5,7 +5,7 @@ import CollabNote from "./models/collabNote.js";
 export const initSocket = (server: any) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://note-stack-frontend-psi.vercel.app",
+      origin: ["https://note-stack-frontend-psi.vercel.app", "http://localhost:5173", "http://localhost:5174" ], // frontend URL
       credentials: true,
     },
   });

@@ -1,18 +1,18 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import {User} from "../models/user.js";
-import {RegisterauthSchema} from "../validation/Registervalidation.js"
-import {generateToken} from "../utility/jwtUtility.js";
-import {LoginauthSchema} from "../validation/LoginValidation.js"
+import { User } from "../models/user.js";
+import { RegisterauthSchema } from "../validation/Registervalidation.js"
+import { generateToken } from "../utility/jwtUtility.js";
+import { LoginauthSchema } from "../validation/LoginValidation.js"
 export const Register = async (req: Request, res: Response) => {
-    //Zod validation
+  //Zod validation
   const parsed = RegisterauthSchema.safeParse(req.body);
 
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid input data" });
   }
 
-  const { name ,email, password } = parsed.data;
+  const { name, email, password } = parsed.data;
 
   try {
     const exists = await User.findOne({ email });
@@ -28,7 +28,7 @@ export const Register = async (req: Request, res: Response) => {
     //it is used to maintain safety for user password during db leaks
 
     const newUser = new User({
-        name,
+      name,
       email,
       password: hashedPassword,
     });
@@ -36,7 +36,7 @@ export const Register = async (req: Request, res: Response) => {
     await newUser.save();
 
     return res.status(201).json({
-      message:"User registered successfully",
+      message: "User registered successfully",
     });
   } catch (err: any) {
     return res.status(500).json({
@@ -80,7 +80,7 @@ export const Login = async (req: Request, res: Response) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict", // use "none" + secure for cross-site
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "none" for cross-site in production
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -101,7 +101,7 @@ export const Login = async (req: Request, res: Response) => {
 export const Logout = (_req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     secure: process.env.NODE_ENV === "production",
   });
 
