@@ -7,6 +7,9 @@ import { ThemeProvider } from "./context/ThemeContext.tsx";
 import { NavbarProvider } from "./context/NavbarContext.tsx";
 import { router } from "./router";
 
+
+console.log("🚀 Frontend Version: 1.0.1 (Production Fix)");
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <ThemeProvider>
