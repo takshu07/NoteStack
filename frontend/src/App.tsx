@@ -1,20 +1,17 @@
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
+import { useAppDispatch } from "./hooks/reduxHooks";
 import { checkAuthThunk } from "./features/auth/authThunks";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuthChecked, loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
+    // Check auth in background without blocking render
     dispatch(checkAuthThunk());
   }, [dispatch]);
 
-  if (!isAuthChecked || loading) {
-    return <p>Checking authentication...</p>;
-  }
-
+  // ✅ Render immediately - no blocking
   return <Outlet />;
 }
 

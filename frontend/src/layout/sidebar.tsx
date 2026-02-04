@@ -29,10 +29,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 h-full flex flex-col bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-800/50 transition-colors duration-300">
+    <div className="w-16 sm:w-56 lg:w-64 h-full flex flex-col bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-800/50 transition-colors duration-300">
       
       {/* Search Bar */}
-      <div className="px-4 pt-6 pb-2">
+      <div className="hidden sm:block px-4 pt-6 pb-2">
          <div className="relative group">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={16} />
             <input 
@@ -58,30 +58,30 @@ const Sidebar = () => {
         
         {/* GROUP 1: WORKSPACE */}
         <div>
-           <div className="px-3 mb-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+           <div className="hidden sm:block px-3 mb-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
               Workspace
            </div>
            <ul className="space-y-1">
              <li>
                <div
                  className={`
-                   group w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer select-none
+                   group w-full flex items-center justify-between px-2 sm:px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer select-none
                    ${(isActive("/notes") && !location.pathname.includes("/notes/collab")) 
                       ? "bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300" 
                       : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"}
                  `}
                  onClick={() => navigate("/notes")}
                >
-                 <div className="flex items-center gap-3">
-                    <FileText size={18} />
-                    <span>My Notes</span>
+                 <div className="flex items-center gap-3 justify-center sm:justify-start w-full sm:w-auto">
+                    <FileText size={18} className="flex-shrink-0" />
+                    <span className="hidden sm:inline">My Notes</span>
                  </div>
                  <button
                     onClick={(e) => {
                         e.stopPropagation();
                         navigate("/notes/create");
                     }} 
-                    className="opacity-0 group-hover:opacity-100 p-1.5 rounded-md hover:bg-white/50 dark:hover:bg-gray-700/50 text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
+                    className="hidden sm:block opacity-0 group-hover:opacity-100 p-1.5 rounded-md hover:bg-white/50 dark:hover:bg-gray-700/50 text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
                     title="New Note"
                  >
                     <Plus size={14} />
@@ -91,23 +91,23 @@ const Sidebar = () => {
              <li>
                <div
                  className={`
-                   group w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer select-none
+                   group w-full flex items-center justify-between px-2 sm:px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer select-none
                    ${isActive("/notes/collab") 
                       ? "bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300" 
                       : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"}
                  `}
                  onClick={() => navigate("/notes/collab")}
                >
-                 <div className="flex items-center gap-3">
-                    <Users size={18} />
-                    <span>Collaboration</span>
+                 <div className="flex items-center gap-3 justify-center sm:justify-start w-full sm:w-auto">
+                    <Users size={18} className="flex-shrink-0" />
+                    <span className="hidden sm:inline">Collaboration</span>
                  </div>
                  <button
                     onClick={(e) => {
                         e.stopPropagation();
                         navigate("/notes/collab/new");
                     }} 
-                    className="opacity-0 group-hover:opacity-100 p-1.5 rounded-md hover:bg-white/50 dark:hover:bg-gray-700/50 text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
+                    className="hidden sm:block opacity-0 group-hover:opacity-100 p-1.5 rounded-md hover:bg-white/50 dark:hover:bg-gray-700/50 text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
                     title="New Collab"
                  >
                     <Plus size={14} />
@@ -120,12 +120,12 @@ const Sidebar = () => {
       </nav>
 
       {/* FOOTER AREA (Optional: User Profile or Settings link) */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-         <div className="flex items-center gap-3 px-2 py-2 rounded-lg">
+      <div className="p-2 sm:p-4 border-t border-gray-200 dark:border-gray-800">
+         <div className="flex items-center gap-3 px-1 sm:px-2 py-2 rounded-lg justify-center sm:justify-start">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-teal-400 to-emerald-500 shadow-sm flex items-center justify-center text-white font-bold text-xs select-none">
               {firstLetter}
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="hidden sm:block flex-1 min-w-0">
                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">My Workspace</p>
                <p className="text-[10px] text-gray-500 truncate">Pro Plan</p>
             </div>

@@ -7,17 +7,14 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port : 5173,
-    host: 'note-stack-frontend-psi.vercel.app',
-    allowedHosts: ['note-stack-frontend-psi.vercel.app', 'note-stack-backend.onrender.com', 'localhost']
+    port: 5173,
+    host: 'localhost', // ✅ Use localhost for local development
+    // allowedHosts only needed for production
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  define: {
-    'process.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.onrender.com/'),
-    'import.meta.env.VITE_API_URL': JSON.stringify('https://note-stack-backend.onrender.com/')
-  },
+  // ✅ No need to hardcode API URL - handled by axios.ts
 });

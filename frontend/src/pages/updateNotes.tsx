@@ -159,13 +159,16 @@ const UpdateNote: React.FC = () => {
     <div className="h-full w-full flex flex-col bg-white dark:bg-gray-950 transition-colors duration-300">
       {/* TOOLBAR */}
       <div className="sticky top-0 z-20 bg-white/80 dark:bg-gray-950/80 backdrop-blur border-b border-gray-100 dark:border-gray-800 transition-all">
-        <div className="flex items-center justify-between px-8 py-3">
-          <Toolbar editor={editor} />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 lg:px-8 py-2 sm:py-3 gap-2 sm:gap-0">
+          <div className="w-full sm:w-auto overflow-x-auto">
+            <Toolbar editor={editor} />
+          </div>
 
           <button
             onClick={handleUpdate}
             className="
-              px-5 py-2 
+              w-full sm:w-auto
+              px-4 sm:px-5 py-2 
               text-sm font-medium 
               rounded-full 
               bg-teal-600 
@@ -175,20 +178,20 @@ const UpdateNote: React.FC = () => {
               transition-all shadow-sm hover:shadow-md
             "
           >
-            Update
+            Save
           </button>
         </div>
       </div>
 
       {/* TITLE */}
-      <div className="px-8 pt-8 pb-4 max-w-4xl mx-auto w-full">
+      <div className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8 pb-3 sm:pb-4 max-w-4xl mx-auto w-full">
         <input
           value={title}
           onChange={(e) => { setTitle(e.target.value); setIsDirty(true); }}
           placeholder="Untitled note"
           className="
             w-full 
-            text-4xl font-bold text-gray-900 dark:text-gray-100
+            text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100
             outline-none 
             bg-transparent
             placeholder-gray-300 dark:placeholder-gray-700
@@ -197,7 +200,7 @@ const UpdateNote: React.FC = () => {
       </div>
 
       {/* EDITOR */}
-      <div className="flex-1 overflow-y-auto px-8 pb-12 w-full max-w-4xl mx-auto">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 w-full max-w-4xl mx-auto">
         <RichTextEditor editor={editor} />
       </div>
 

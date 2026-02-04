@@ -10,7 +10,7 @@ interface AuthState {
 const initialState: AuthState = {
   loading: false,
   error: null,
-  isAuthChecked: false,
+  isAuthChecked: true, // ✅ Start as true - don't block rendering
 };
 
 const authSlice = createSlice({
@@ -34,7 +34,7 @@ const authSlice = createSlice({
         state.isAuthChecked = true;
         // Save user to storage
         if (action.payload?.user) {
-           localStorage.setItem("user", JSON.stringify(action.payload.user));
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
         }
       })
       .addCase(loginThunk.rejected, (state, action) => {
@@ -52,7 +52,7 @@ const authSlice = createSlice({
         state.isAuthChecked = true;
         // Sync user from backend check
         if (action.payload?.user) {
-           localStorage.setItem("user", JSON.stringify(action.payload.user));
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
         }
       })
       .addCase(checkAuthThunk.rejected, (state) => {

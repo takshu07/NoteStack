@@ -31,13 +31,13 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) return null;
 
   const btn =
-    "px-2 py-1 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors";
+    "px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-w-[2.5rem] sm:min-w-0";
 
   const active =
     "bg-[#e0f4f1] text-[#0f766e] dark:bg-teal-900/30 dark:text-teal-400";
 
   return (
-    <div className="flex flex-wrap items-center gap-1">
+    <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
       {/* HEADINGS */}
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
@@ -60,7 +60,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         H3
       </button>
 
-      <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1" />
+      <div className="hidden sm:block w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1" />
 
       {/* TEXT */}
       <button
@@ -84,7 +84,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         S
       </button>
 
-      <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1" />
+      <div className="hidden sm:block w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1" />
 
       {/* LISTS */}
       <button
@@ -101,7 +101,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         1. List
       </button>
 
-      <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1" />
+      <div className="hidden sm:block w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1" />
 
       {/* CODE */}
       <button

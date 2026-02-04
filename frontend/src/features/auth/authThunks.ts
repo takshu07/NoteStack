@@ -22,8 +22,12 @@ export const checkAuthThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await checkAuth();
+      // ✅ If null, user is not authenticated (401 was handled)
+      if (!data) {
+        return rejectWithValue("Not authenticated");
+      }
       return data;
-    } catch {
+    } catch (error) {
       return rejectWithValue("Not authenticated");
     }
   }

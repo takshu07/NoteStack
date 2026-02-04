@@ -54,9 +54,18 @@ export const logoutUser = async () => {
 
 // ✅ USED BY checkAuthThunk
 export const checkAuth = async () => {
-  const res = await axiosInstance.get(
-    "/api/auth/me",
-    { withCredentials: true }
-  );
-  return res.data;
+  try {
+    const res = await axiosInstance.get(
+      "/api/auth/me",
+      { withCredentials: true }
+    );
+    return res.data;
+  } catch (error: any) {
+    // ✅ Silently handle 401 - user is just not logged in
+    if (error.response?.status === 401) {
+      return null;
+    }
+    // Re-throw other errors
+    throw error;
+  }
 };

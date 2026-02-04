@@ -35,7 +35,7 @@ const Navbar = () => {
     <nav
       className="
         fixed top-0 left-0 right-0 z-50
-        h-16 px-6
+        h-14 sm:h-16 px-4 sm:px-6
         flex items-center justify-between
         glass-panel
         border-b-0
@@ -43,19 +43,19 @@ const Navbar = () => {
       "
     >
       {/* LEFT — ICON + BRAND */}
-      <div className="flex items-center gap-3 select-none w-1/4">
-        <div className="p-2 bg-teal-50 dark:bg-teal-900/20 rounded-xl">
+      <div className="flex items-center gap-2 sm:gap-3 select-none w-auto sm:w-1/4">
+        <div className="p-1.5 sm:p-2 bg-teal-50 dark:bg-teal-900/20 rounded-lg sm:rounded-xl">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-teal-600 dark:text-teal-400"
+            className="sm:w-5 sm:h-5 text-teal-600 dark:text-teal-400"
           >
             <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
             <path d="M2 6h4" />
@@ -66,40 +66,40 @@ const Navbar = () => {
           </svg>
         </div>
 
-        <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-gray-100">
+        <span className="text-base sm:text-lg font-bold tracking-tight text-gray-900 dark:text-gray-100">
           NoteStack
         </span>
       </div>
 
       {/* CENTER — DYNAMIC CONTENT */}
-      <div className="flex-1 flex justify-center">
+      <div className="hidden md:flex flex-1 justify-center">
         {centerContent}
       </div>
 
       {/* RIGHT — THEME + AVATAR + LOGOUT */}
-      <div className="flex items-center gap-4 w-1/4 justify-end">
+      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 w-auto sm:w-1/4 justify-end">
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
           className="
-            p-2.5 rounded-full
+            p-2 sm:p-2.5 rounded-full
             text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100
             hover:bg-gray-100 dark:hover:bg-gray-800
             transition-all duration-200
           "
           title="Toggle Theme"
         >
-          {theme === "light" ? <Moon size={20} className="stroke-[1.5]" /> : <Sun size={20} className="stroke-[1.5]" />}
+          {theme === "light" ? <Moon size={18} className="sm:w-5 sm:h-5 stroke-[1.5]" /> : <Sun size={18} className="sm:w-5 sm:h-5 stroke-[1.5]" />}
         </button>
         
-        <div className="h-8 w-[1px] bg-gray-200 dark:bg-gray-800 hidden sm:block"></div>
+        <div className="h-6 sm:h-8 w-[1px] bg-gray-200 dark:bg-gray-800 hidden sm:block"></div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <img
             src="https://i.pravatar.cc/150?img=11"
             alt="User"
             className="
-              w-9 h-9 rounded-full
+              w-8 h-8 sm:w-9 sm:h-9 rounded-full
               border-2 border-white dark:border-gray-800 shadow-sm
               hover:scale-105 transition-transform duration-200 cursor-pointer
             "
@@ -110,7 +110,7 @@ const Navbar = () => {
             className="
               hidden md:block
               text-xs font-semibold
-              px-4 py-2
+              px-3 sm:px-4 py-1.5 sm:py-2
               rounded-full
               text-gray-600 dark:text-gray-300
               hover:bg-gray-100 dark:hover:bg-gray-800

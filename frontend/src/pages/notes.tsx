@@ -10,14 +10,14 @@ const Notes = () => {
     <div className="h-screen bg-white dark:bg-gray-950 overflow-hidden transition-colors duration-300">
       <Navbar />
 
-      <div className="flex pt-16 h-screen">
+      <div className="flex pt-14 sm:pt-16 h-screen">
         <Sidebar />
 
         <main
           className={`flex-1 ${
             isNewCollab
               ? "p-0 overflow-hidden"
-              : "px-8 py-8 overflow-auto"
+              : "px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 overflow-auto"
           }`}
         >
           <Outlet />
